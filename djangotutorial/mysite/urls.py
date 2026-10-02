@@ -23,5 +23,6 @@ def lesson_1(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('lesson_1/', include("lesson_1.urls"))
+    path('lesson_1/', include("lesson_1.urls")),
+    path('lesson_1_1/', include("lesson_1_1.urls"))
 ]
