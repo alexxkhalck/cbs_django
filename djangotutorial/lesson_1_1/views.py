@@ -3,4 +3,4 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse("Lesson 1_1 has created and works!")
+    return render(request, 'lesson_1_1/index.html')
