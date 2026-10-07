@@ -1,5 +1,5 @@
 """
-URL configuration for mysite project.
+URL configuration for bookshop project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.1/topics/http/urls/
@@ -16,14 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from django.http import HttpResponse
-
-def lesson_1(request):
-    return HttpResponse("The page named lesson_1 is working.")
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('lesson_1/', include("lesson_1.urls")),
-    path('lesson_1_1/', include("lesson_1_1.urls")),
-    path('lesson_2/', include("lesson_2.urls"))
+    path("home/", views.home, name="home-view"),
+    path("book/<str:title>/", views.Book, name="book"),
+    path("lesson_2/", include("lesson_2.urls")),
 ]
