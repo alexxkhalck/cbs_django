@@ -18,12 +18,10 @@ from django.contrib import admin
 from django.urls import include, path
 from django.http import HttpResponse
 
-def lesson_1(request):
-    return HttpResponse("The page named lesson_1 is working.")
+def core(request):
+    return HttpResponse("The page named core is working.")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('lesson_1/', include("lesson_1.urls")),
-    path('lesson_1_1/', include("lesson_1_1.urls")),
-    path('lesson_2/', include("lesson_2.urls"))
+    path('core/', include("core.urls")),
 ]
