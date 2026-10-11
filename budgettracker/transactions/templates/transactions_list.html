@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    
+    {% if transactions %}
+        <table border="1">
+            <tr>
+                <th>Дата</th>
+                <th>Категорія</th>
+                <th>Тип</th>
+                <th>Сума</th>
+                <th>Опис</th>
+            </tr>
+            {% for t in transactions %}
+                <tr>
+                    <td>{{ t.date }}</td>
+                    <td>{{ t.category }}</td>
+                    <td>{{ t.type }}</td>
+                    <td>{{ t.amount }} грн</td>
+                    <td>{{ t.description }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Немає транзакцій.</p>
+    {% endif %}
+    
+    <a href="{% url 'home' %}">Назад на головну</a>
+</body>
+</html>
