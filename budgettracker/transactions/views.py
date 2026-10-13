@@ -17,8 +17,8 @@ BUDGETS = [
 
 def home(request):
     """Головна"""
-    total_income = sum(item.amount for item in TRANSACTIONS if item.type == 'income')
-    total_expense = sum(item.amount for item in TRANSACTIONS if item.type == 'expense')
+    total_income = sum(item["amount"] for item in TRANSACTIONS if item["type"] == 'income')
+    total_expense = sum(item["amount"] for item in TRANSACTIONS if item["type"] == 'expense')
     balance = total_income - total_expense
 
     context = {
@@ -39,7 +39,7 @@ def transactions_list(request):
 
 def transaction_detail(request, transaction_id):
     """Деталі транзакції"""
-    transaction = next((item for item in TRANSACTIONS if item.id == transaction_id), None)
+    transaction = next((item for item in TRANSACTIONS if item["id"] == transaction_id), None)
     if transaction is None:
         return HttpResponse("Транзакція не знайдена", status=404)
 
