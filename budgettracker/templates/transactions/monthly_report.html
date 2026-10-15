@@ -1,0 +1,27 @@
+<h1>Звіт за місяць {{ month }}</h1>
+
+{% if error %}
+    <p>{{ error }}</p>
+{% else %}
+    <p>Доходи: {{ total_income }} грн</p>
+    <p>Витрати: {{ total_expense }} грн</p>
+    <p>Баланс: {{ balance }} грн</p>
+
+    <h2>Транзакції</h2>
+
+    {% if transactions %}
+        <ul>
+            {% for transaction in transactions %}
+                <li>
+                    {{ transaction.created_at|date:"d.m.Y" }} —
+                    {{ transaction.amount }} грн —
+                    {{ transaction.category.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>За цей місяць транзакцій немає.</p>
+    {% endif %}
+{% endif %}
+
+<a href="{% url 'transactions_list' %}">Назад до транзакцій</a>

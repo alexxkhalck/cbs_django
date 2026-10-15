@@ -1,0 +1,25 @@
+<h1>Транзакції: {{ category.name }}</h1>
+
+{% if transactions %}
+    <table border="1">
+        <tr>
+            <th>Дата</th>
+            <th>Категорія</th>
+            <th>Тип</th>
+            <th>Сума</th>
+            <th>Опис</th>
+        </tr>
+        {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.created_at|date:"d.m.Y" }}</td>
+                <td>{{ transaction.category.name }}</td>
+                <td>{{ transaction.type }}</td>
+                <td>{{ transaction.amount }} грн</td>
+                <td>{{ transaction.description }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>Транзакцій у цій категорії не знайдено.</p>
+{% endif %}
+<a href="{% url 'home' %}">Назад на головну</a>

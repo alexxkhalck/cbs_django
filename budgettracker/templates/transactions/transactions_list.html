@@ -16,13 +16,13 @@
                 <th>Сума</th>
                 <th>Опис</th>
             </tr>
-            {% for t in transactions %}
+            {% for transaction in transactions %}
                 <tr>
-                    <td>{{ t.date }}</td>
-                    <td>{{ t.category }}</td>
-                    <td>{{ t.type }}</td>
-                    <td>{{ t.amount }} грн</td>
-                    <td>{{ t.description }}</td>
+                    <td>{{ transaction.created_at|date:"d.m.Y" }}</td>
+                    <td>{{ transaction.category.name }}</td>
+                    <td>{{ transaction.type }}</td>
+                    <td>{{ transaction.amount }} грн</td>
+                    <td>{{ transaction.description }}</td>
                 </tr>
             {% endfor %}
         </table>

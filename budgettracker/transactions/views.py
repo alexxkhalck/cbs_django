@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+from budgettracker.transactions.models import Transaction, Category
+from django.db.models import Sum, Q
 
 TRANSACTIONS = [
     {"id": 1, "amount": 10000, "type": "income", "category": "Salary", "date": "2026-10-01", "description": "Monthly salary"},
@@ -31,9 +33,11 @@ def home(request):
 
 def transactions_list(request):
     """Список всіх транзакцій"""
+    transactions = Transaction.objects.select_related("category")
+
     context = {
         "title": "Мої транзакції",
-        "transactions": TRANSACTIONS,
+        "transactions": transactions,
     }
     return render(request, "transactions/transactions_list.html", context)
 
@@ -59,7 +63,7 @@ def budgets_list(request):
 
 def income_list(request):
     """Тільки доходи"""
-    income_transactions = [item for item in TRANSACTIONS if item.type == 'income']
+    income_transactions = [item for item in TRANSACTIONS if item.transaction_type == 'income']
     total = sum(item.amount for item in income_transactions)
     context = {
         "title": "Доходи",
@@ -78,3 +82,52 @@ def expense_list(request):
         "total": total,
     }
     return render(request, "transactions/expense_list.html", context)
+
+def transactions_by_category(request, category):
+    category_obj = get_object_or_404(Category, name=category)
+    transactions = Transaction.objects.filter(category=category_obj)
+
+    context = {
+        "title": f"Транзакції: {category_obj.name}",
+        "category": category_obj,
+        "transactions": transactions,
+    }
+    return render(request, "transactions/transactions_by_category.html", context)
+
+def monthly_report(request, month):
+    if not 1 <= month <= 12:
+        return render(
+            request,
+            "transactions/monthly_report.html",
+            {
+                "title": "Невірний місяць",
+                "error": "Номер місяця має бути від 1 до 12.",
+            },
+            status=400,
+        )
+
+    transactions = Transaction.objects.filter(created_at__month=month)
+
+    total_income = transactions.filter(
+        transaction_type="income"
+    ).aggregate(total=Sum("amount"))["total"] or 0
+
+    total_expense = transactions.filter(
+        transaction_type="expense"
+    ).aggregate(total=Sum("amount"))["total"] or 0
+
+    balance = total_income - total_expense
+
+    context = {
+        "title": f"Звіт за місяць {month}",
+        "month": month,
+        "transactions": transactions,
+        "total_income": total_income,
+        "total_expense": total_expense,
+        "balance": balance,
+    }
+    return render(
+        request,
+        "transactions/monthly_report.html",
+        context
+    )
