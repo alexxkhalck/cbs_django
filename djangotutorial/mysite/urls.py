@@ -24,4 +24,5 @@ def core(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('core/', include("core.urls")),
+    path('transactions/', include("transactions.urls")),
 ]
